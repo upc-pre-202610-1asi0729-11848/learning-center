@@ -1,1 +1,13 @@
-<p>category-form works!</p>
+<h1 class="title">{{ (isEdit ? 'category.edit-title' : 'category.new-title') | translate }}</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-label>{{ 'category.name'|translate }}</mat-label>
+        <input matInput formControlName="name" required>
+        @if (form.get('name')!.touched && form.get('name')!.hasError('required')) {
+            <mat-error>{{ 'category.error.name-required' | translate }}</mat-error>
+        }
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        {{ (isEdit ? 'category.update'  : 'category.create') | translate }}
+    </button>
+</form>
