@@ -1,3 +1,72 @@
 {
-
+  "option" : {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "categories": "Categorías",
+    "courses": "Cursos"
+  },
+  "about": {
+    "title": "Acerca de nosotros",
+    "content": "ACME Learning Center es una plataforma educativa, parte de ACME Corporation."
+  },
+  "home": {
+    "title": "Bienvenido",
+    "content": "Bienvenido a ACME Learning Center."
+  },
+  "page-not-found": {
+    "title": "Página no encontrada",
+    "content": "La ruta <strong>{{ invalidPath }}</strong> es inválida.",
+    "go-home": "Ir a Inicio"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "powered-by": "Desarrollado con",
+    "and": "y"
+  },
+  "categories": {
+    "list-title": "Categorías",
+    "id": "ID",
+    "name": "Nombre",
+    "actions": "Acciones",
+    "new": "Nueva Categoría",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "category": {
+    "new-title": "Crear Nueva Categoría",
+    "edit-title": "Editar Categoría",
+    "name": "Nombre",
+    "create": "Crear Categoría",
+    "update": "Actualizar Categoría",
+    "cancel": "Cancelar",
+    "error": {
+      "name-required": "El nombre es obligatorio"
+    }
+  },
+  "courses": {
+    "list-title": "Cursos",
+    "id": "ID",
+    "title": "Título",
+    "description": "Descripción",
+    "category": "Categoría",
+    "actions": "Acciones",
+    "new": "Nuevo Curso",
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "course": {
+    "new-title": "Crear Nuevo Curso",
+    "edit-title": "Editar Curso",
+    "title": "Título",
+    "description": "Descripción",
+    "category": "Categoría",
+    "create": "Crear Curso",
+    "update": "Actualizar Curso",
+    "cancel": "Cancelar",
+    "error": {
+      "title-required": "El título es obligatorio",
+      "description-required": "La descripción es obligatoria",
+      "category-required": "La categoría es obligatoria"
+    }
+  }
 }
