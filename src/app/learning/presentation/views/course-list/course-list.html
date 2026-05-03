@@ -1,0 +1,48 @@
+<h1 class="title">{{ 'courses.list-title' | translate }}</h1>
+@if (store.loading()) {
+<mat-spinner diameter="40"></mat-spinner>
+}
+@if (store.error()) {
+  <mat-error>{{ store.error() }}</mat-error>
+}
+<table mat-table [dataSource]="dataSource()" class="mat-elevation-z8"  matSort matSortActive="id" matSortDirection="asc" matSortDisableClear>
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'courses.id' | translate}}</th>
+    <td mat-cell *matCellDef="let course"> {{ course.id }} </td>
+  </ng-container>
+
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'courses.title' | translate}}</th>
+    <td mat-cell *matCellDef="let course"> {{ course.title }} </td>
+  </ng-container>
+
+  <!-- Description Column -->
+  <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'courses.description' | translate}} </th>
+    <td mat-cell *matCellDef="let course"> {{ course.description }} </td>
+  </ng-container>
+
+  <!-- Category Column -->
+  <ng-container matColumnDef="category">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'courses.category' | translate }} </th>
+    <td mat-cell *matCellDef="let course"> {{ course.category?.name ?? 'None' }} </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> {{ 'courses.actions' | translate }} </th>
+    <td mat-cell *matCellDef="let course">
+      <button mat-icon-button aria-label="{{ 'courses.edit'    | translate }}" (click)="editCourse(course.id)"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button aria-label="{{ 'courses.delete'  | translate }}" (click)="deleteCourse(course.id)"><mat-icon>delete</mat-icon></button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+<button mat-raised-button color="primary" (click)="navigateToNew()">{{ 'courses.new' | translate }}</button>
