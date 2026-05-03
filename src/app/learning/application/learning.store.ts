@@ -1,10 +1,11 @@
 import {Category} from '../domain/model/category.entity';
-import {computed, Signal, signal} from '@angular/core';
+import {computed, Injectable, Signal, signal} from '@angular/core';
 import {LearningApi} from '../infrastructure/learning-api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {retry} from 'rxjs';
 import {Course} from "../domain/model/couse.entity";
 
+@Injectable({providedIn: 'root'})
 export class LearningStore {
   private readonly categoriesSignal = signal<Category[]>([]);
   private readonly coursesSignal = signal<Course[]>([]);
@@ -18,7 +19,8 @@ export class LearningStore {
   readonly error = this.errorSignal.asReadonly();
 
   constructor(private learningApi: LearningApi) {
-
+    this.loadCategories();
+    this.loadCourses();
   }
 
   private formatError(error: any, fallback: string): string {
