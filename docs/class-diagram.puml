@@ -1,0 +1,175 @@
+@startuml
+' Learning Center Application - Domain-Driven Design Class Diagram (LearningApi Added, AppComponent Included)
+
+package "app" {
+  package "learning" {
+    package "domain.model" {
+      class Category <<Entity>> {
+        +name: string
+        +getName(): string
+        +setName(name: string): void
+      }
+      class Course <<Entity>> {
+        +title: string
+        +category: Category
+        +getTitle(): string
+        +setTitle(title: string): void
+        +getCategory(): Category
+        +setCategory(category: Category): void
+      }
+      Category "1" <|-- "*" Course : contains
+    }
+    package "infrastructure" {
+      class CategoriesApiEndpoint {
+        // Inherits all methods and attributes from BaseApiEndpoint
+      }
+      class CoursesApiEndpoint {
+        // Inherits all methods and attributes from BaseApiEndpoint
+      }
+      class LearningApi {
+        -coursesEndpoint: CoursesApiEndpoint
+        -categoriesEndpoint: CategoriesApiEndpoint
+        +getCourses(): Observable<Course[]>
+        +getCourse(id: number): Observable<Course>
+        +createCourse(course: Course): Observable<Course>
+        // ...other methods for categories...
+      }
+      class CategoryAssembler <<Assembler>> {
+        +toEntitiesFromResponse(response: CategoriesResponse): Category[]
+        +toEntityFromResource(resource: CategoryResource): Category
+        +toResourceFromEntity(entity: Category): CategoryResource
+      }
+      class CourseAssembler <<Assembler>> {
+        +toEntitiesFromResponse(response: CoursesResponse): Course[]
+        +toEntityFromResource(resource: CourseResource): Course
+        +toResourceFromEntity(entity: Course): CourseResource
+      }
+      CategoryAssembler --|> app.shared.infrastructure.BaseAssembler : implements
+      CourseAssembler --|> app.shared.infrastructure.BaseAssembler : implements
+      CategoryAssembler --> Category : converts to/from
+      CourseAssembler --> Course : converts to/from
+      CategoriesApiEndpoint --> CategoryAssembler : uses for conversion
+      CoursesApiEndpoint --> CourseAssembler : uses for conversion
+      CategoriesApiEndpoint --|> app.shared.infrastructure.BaseApiEndpoint : extends
+      CoursesApiEndpoint --|> app.shared.infrastructure.BaseApiEndpoint : extends
+      LearningApi --|> app.shared.infrastructure.BaseApi : extends
+      LearningApi --> CoursesApiEndpoint : delegates to
+      LearningApi --> CategoriesApiEndpoint : delegates to
+    }
+    package "application" {
+      class LearningStore <<Store>> {
+        +categories: Category[]
+        +courses: Course[]
+        +getCategories(): Category[]
+        +getCourses(): Course[]
+        +addCategory(category: Category): void
+        +addCourse(course: Course): void
+        +updateCategory(category: Category): void
+        +updateCourse(course: Course): void
+        +removeCategory(categoryId: string): void
+        +removeCourse(courseId: string): void
+      }
+      LearningStore --> Category : manages
+      LearningStore --> Course : manages
+    }
+    package "presentation.views" {
+      class CategoryForm <<Component>> {
+        +store: LearningStore
+        +isEdit: boolean
+        +categoryId: number | null
+        +submit(): void
+      }
+      class CategoryList <<Component>> {
+        +store: LearningStore
+        +displayedColumns: string[]
+        +editCategory(id: number): void
+        +deleteCategory(id: number): void
+        +navigateToNew(): void
+        +ngAfterViewChecked(): void
+      }
+      class CourseForm <<Component>> {
+        +store: LearningStore
+        +categories: any
+        +isEdit: boolean
+        +courseId: number | null
+      }
+      class CourseList <<Component>> {
+        +store: LearningStore
+        +displayedColumns: string[]
+        +editCourse(id: number): void
+        +deleteCourse(id: number): void
+        +navigateToNew(): void
+        +ngAfterViewChecked(): void
+      }
+      CategoryForm ..> LearningStore : uses
+      CategoryList ..> LearningStore : uses
+      CourseForm ..> LearningStore : uses
+      CourseList ..> LearningStore : uses
+    }
+  }
+  package "shared" {
+    package "infrastructure" {
+      abstract class BaseApiEndpoint {
+        -http: HttpClient
+        -endpointUrl: string
+        -assembler: BaseAssembler
+        +getAll(): Observable<BaseEntity[]>
+        +getById(id: number): Observable<BaseEntity>
+        +create(entity: BaseEntity): Observable<BaseEntity>
+        +update(entity: BaseEntity, id: number): Observable<BaseEntity>
+        +delete(id: number): Observable<void>
+        #handleError(operation: string): (error: HttpErrorResponse) => Observable<never>
+      }
+      class BaseApi {
+        +request(endpoint: string): any
+      }
+      interface BaseAssembler <<Assembler>> {
+        +toEntitiesFromResponse(response: BaseResponse): BaseEntity[]
+        +toEntityFromResource(resource: BaseResource): BaseEntity
+        +toResourceFromEntity(entity: BaseEntity): BaseResource
+      }
+      class BaseEntity <<Entity>> {
+        +id: string
+        +getId(): string
+        +setId(id: string): void
+      }
+      BaseApiEndpoint --> BaseApi : uses
+      BaseApi --> BaseAssembler : uses
+      BaseAssembler --> BaseEntity : converts to/from
+    }
+    package "presentation.components" {
+      class FooterContent <<Component>> {
+      }
+      class LanguageSwitcher <<Component>> {
+        +currentLang: string
+        +languages: string[]
+        +useLanguage(language: string): void
+      }
+      class Layout <<Component>> {
+        +options: {link: string, label: string}[]
+      }
+    }
+    package "presentation.views" {
+      class About <<Component>> {
+      }
+      class Home <<Component>> {
+      }
+      class PageNotFound <<Component>> {
+        +invalidPath: string
+        +ngOnInit(): void
+        +navigateToHome(): void
+      }
+    }
+    Layout --> FooterContent : includes
+    Layout --> LanguageSwitcher : includes
+    Layout --> About : includes
+    Layout --> Home : includes
+    Layout --> PageNotFound : includes
+  }
+  class AppComponent <<Component>> {
+    // Main application shell component
+    // Add representative attributes/methods if needed
+  }
+  AppComponent --> app.shared.presentation.components.Layout : uses
+}
+@enduml
