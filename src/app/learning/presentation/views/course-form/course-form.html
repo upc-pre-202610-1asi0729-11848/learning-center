@@ -1,0 +1,32 @@
+<h1 class="title">{{ (isEdit ? 'course.edit-title' : 'course.new-title') | translate }}</h1>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>{{ 'course.title' | translate }}</mat-label>
+    <input matInput formControlName="title" required>
+    @if (form.get('title')?.touched && form.get('title')!.hasError('required')) {
+      <mat-error>{{ 'course.error.title-required' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'course.description' | translate}}</mat-label>
+    <input matInput formControlName="description" required>
+    @if (form.get('description')?.touched && form.get('description')!.hasError('required')) {
+      <mat-error>{{ 'course.error.description-required' | translate }}</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{ 'course.category' | translate}}</mat-label>
+    <mat-select formControlName="categoryId">
+      <mat-option [value]="null">None</mat-option>
+      @for (category of categories(); track category.id) {
+        <mat-option [value]="category.id">{{ category.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+    {{ (isEdit ? 'course.update' : 'course.create') | translate }}
+  </button>
+</form>
