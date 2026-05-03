@@ -3,7 +3,7 @@ export const environment = {
   platformProviderApiBaseUrl: 'http://localhost:3000/api/v1',
   platformProviderCategoriesEndpointPath: '/categories',
   platformProviderCoursesEndpointPath: '/courses',
-  platformProviderSigInEndpointPath: '/authentication/sign-in',
+  platformProviderSignInEndpointPath: '/authentication/sign-in',
   platformProviderSignUpEndpointPath: '/authentication/sign-up',
   logoProviderApiBaseUrl: 'https://img.logo.dev'
 };
