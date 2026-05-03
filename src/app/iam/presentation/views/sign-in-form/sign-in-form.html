@@ -1,0 +1,24 @@
+<div class="form">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Sign-In</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" (submit)="performSignIn()">
+        <mat-form-field>
+          <input matInput placeholder="Username" id="username" name="username" required formControlName="username">
+          @if (isInvalidControl(form,'username')) {
+            <mat-error>{{ errorMessagesForControl(form,'username')}}</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Password" id="password" name="password" formControlName="password">
+          @if (isInvalidControl(form,'password')) {
+            <mat-error>{{ errorMessagesForControl(form,'password')}}</mat-error>
+          }
+        </mat-form-field>
+        <button mat-raised-button color="primary">Sign-In</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
