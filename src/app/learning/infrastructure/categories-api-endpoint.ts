@@ -5,7 +5,7 @@ import {CategoryAssembler} from './category-assembler';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const endpointUrl = `${environment.logoProviderApiBaseUrl}${environment.platformProviderCategoriesEndpointPath}`;
+const endpointUrl = `${environment.platformProviderApiBaseUrl}${environment.platformProviderCategoriesEndpointPath}`;
 
 export class CategoriesApiEndpoint
   extends BaseApiEndpoint<Category, CategoryResource, CategoriesResponse, CategoryAssembler>{
